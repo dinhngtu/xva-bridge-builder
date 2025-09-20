@@ -1,0 +1,5 @@
+libarchive-c==5.3
+Nuitka==2.7.16
+orderedset==2.0.3
+patchelf==0.17.2.1
+zstandard==0.20.0

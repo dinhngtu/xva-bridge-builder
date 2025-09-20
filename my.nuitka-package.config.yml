@@ -1,0 +1,7 @@
+- module-name: libarchive.ffi
+  dlls:
+    - from_filenames:
+        relative_path: .
+        prefixes:
+          - libarchive
+      dest_path: .
