@@ -1,0 +1,21 @@
+name: build
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ghcr.io/xcp-ng/xcp-ng-build-env:8.3
+    steps:
+      - name: yum
+        run: yum install -y python3-devel libarchive libarchive-devel
+      - name: venv
+        run: |
+          python3 -m venv ./venv && ./venv/bin/python3 -m pip install -r requirements.txt
+      - name: build
+        run: |
+          mkdir -p ./build
+          . ./venv/bin/activate
+          sh ./do_build.sh
+      - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          path: build/xva_bridge.bin
