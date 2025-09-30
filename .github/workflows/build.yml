@@ -3,9 +3,10 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ghcr.io/xcp-ng/xcp-ng-build-env:8.3
+    runs-on: ubuntu-latest
+    container: ghcr.io/xcp-ng/xcp-ng-build-env:8.3
     steps:
-      - name: yum
+      - name: build
         run: yum install -y python3-devel libarchive libarchive-devel
       - name: venv
         run: |
