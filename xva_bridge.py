@@ -44,15 +44,13 @@ class XvaHeader:
 
     def get_bridge(self):
         for member in self.members():
-            member_name = member.get_name()
-            if member_name == "bridge":
+            if member.get_name() == "bridge":
                 return member.get_value()
         raise ValueError("Could not find bridge value in XVA header")
 
     def set_bridge(self, bridge: str):
         for member in self.members():
-            member_name = member.get_name()
-            if member_name == "bridge":
+            if member.get_name() == "bridge":
                 member.set_value(bridge)
                 return
         raise ValueError("Could not find bridge value in XVA header")
