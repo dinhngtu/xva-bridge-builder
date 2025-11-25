@@ -5,6 +5,7 @@
 import argparse
 import io
 import logging
+import os
 from xml.dom import minidom
 
 import libarchive
@@ -69,6 +70,10 @@ if __name__ == "__main__":
         help="compression mode of new XVA when setting bridge value (default: zstd)",
     )
     parser.add_argument("-o", "--output", help="output file path (must not be the same as input)")
+    parser.add_argument("--backup-path", help="backup file path")
+    parser.add_argument(
+        "--in-place", action="store_true", help="rename output file to input file; rename input file to backup file"
+    )
     parser.add_argument("-v", "--verbose", action="store_true", help="verbose logging")
     args = parser.parse_args()
 
@@ -123,3 +128,14 @@ if __name__ == "__main__":
                     for block in entry.get_blocks():
                         libarchive.ffi.write_data(output_file._pointer, block, len(block))
                     libarchive.ffi.write_finish_entry(output_file._pointer)
+
+            if args.in_place:
+                backup_path = args.backup_path
+                if not backup_path:
+                    backup_path = args.xva + ".bak"
+                logging.info(f"Backup path: {backup_path}")
+
+                logging.info(f"Renaming {args.xva} -> {backup_path}")
+                os.rename(args.xva, backup_path)
+                logging.info(f"Renaming {output_path} -> {args.xva}")
+                os.rename(output_path, args.xva)
